@@ -25,14 +25,12 @@ This version is entirely **terminal-based (CLI)** and focuses on clear logic, cl
 ---
 
 ## 🧠 Learning Objectives
-
-This project was designed to practice and apply:
-- Java basics: variables, loops, arrays, methods
+- This project was designed to practice and apply:
+- Python basics: variables, loops, lists, functions
 - Modular programming
-- User input handling with `Scanner`
-- Conditional logic and decision trees
+- User input handling with input()
+- Conditional logic and decision structures
 - Building terminal-based applications
-
 ---
 
 ## 🎮 Game Rules
