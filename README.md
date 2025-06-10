@@ -64,7 +64,7 @@ Player X, enter your move (1-9):
 **Youssef Jamil**  
 📧 youssefjamelabdullatif@gmail.com  
 🎓 Aspiring Software Engineer | Full Stack & Flutter Developer  
-🌐 [LinkedIn](replace with your actual link)  
+🌐 [LinkedIn](https://www.linkedin.com/in/youssef-jameel-abdullatif-ali)
 🧰 Skills: Java, Dart/Flutter, HTML, CSS, JavaScript, Git, OOP
 
 ---
