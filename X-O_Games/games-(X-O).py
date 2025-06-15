@@ -48,5 +48,58 @@ class Menu:
         return self.get_valid_choice("Choose an option (1 or 2): ", ["1", "2"])
 
 
-Menu = Menu()
-Menu.display_main_menu()
+class Board:
+    # ! Initializes the game board for Tic Tac Toe.
+    # ! Sets up a 3x3 board represented as a list of strings numbered 1 through 9
+    def __init__(self):
+        self.board = [str(i) for i in range(1, 10)]
+
+    def display(self):
+        print("current board: \n")
+        for i in range(3):
+            print(" | ".join(self.board[i * 3 : (i + 1) * 3]))
+            if i < 2:
+                print("-" * 10)
+
+    def update_board(self, position, symbol):
+        # Updates the board at the specified position with the given symbol.
+        # Check if the position is valid and not already occupied
+        if position < 1 or position > 9:
+            print("Invalid position. Please choose a number between 1 and 9.")
+            return False
+        if self.board[position - 1] not in ["X", "O"]:
+            self.board[position - 1] = symbol
+            return True
+        return False
+
+    def is_full(self):
+        return all(cell in ["X", "O"] for cell in self.board)
+
+    def reset_board(self):
+        # Resets the board to its initial state.
+        for i in range(9):
+            self.board[i] = str(i + 1)
+
+
+# ? this comment to implementation to work with row and column instead of position
+# ? if you want to use this implementation, uncomment the code below
+# ? if someone want to use the program with row and column instead of position
+#     def __init__(self):
+#         self.board = [[" " for _ in range(3)] for _ in range(3)]
+#
+#     def display(self):
+#         for row in self.board:
+#             print("|".join(row))
+#             print("-" * 5)
+#
+#     def update(self, row, col, symbol):
+#         if self.board[row][col] == " ":
+#             self.board[row][col] = symbol
+#             return True
+#         return False
+#
+#     def is_full(self):
+#         return all(cell != " " for row in self.board for cell in row)
+
+#       def reset(self):
+#            self.board = [[" " for _ in range(3)] for _ in range(3)] """
