@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
-from games_x_o import Game
+from youVsComputer_version import Game
+import random
 
 
 class GameGUI:
@@ -9,19 +10,22 @@ class GameGUI:
         self.window.title("X-O Game - Player Setup")
         self.game = Game()
 
-        self.name1_entry = tk.Entry(self.window, font=("Arial", 14))
-        self.name2_entry = tk.Entry(self.window, font=("Arial", 14))
+        # عدد مرات الفوز
+        self.player_wins = 0
+        self.computer_wins = 0
+
+        self.name1_entry = tk.Entry(self.window, font=("Arial", 14), justify="center")
         self.symbol_var = tk.StringVar(value="X")
 
         self.setup_screen()
 
     def setup_screen(self):
-        tk.Label(self.window, text="Player 1 Name:", font=("Arial", 14)).grid(
+        tk.Label(self.window, text="Your Name:", font=("Arial", 14)).grid(
             row=0, column=0, padx=10, pady=10
         )
         self.name1_entry.grid(row=0, column=1, padx=10, pady=10)
 
-        tk.Label(self.window, text="Choose Player 1 Symbol:", font=("Arial", 14)).grid(
+        tk.Label(self.window, text="Choose Your Symbol:", font=("Arial", 14)).grid(
             row=1, column=0, padx=10, pady=10
         )
         tk.Radiobutton(
@@ -39,41 +43,41 @@ class GameGUI:
             font=("Arial", 12),
         ).grid(row=1, column=1, sticky="e")
 
-        tk.Label(self.window, text="Player 2 Name:", font=("Arial", 14)).grid(
-            row=2, column=0, padx=10, pady=10
-        )
-        self.name2_entry.grid(row=2, column=1, padx=10, pady=10)
-
         tk.Button(
             self.window, text="Start Game", font=("Arial", 14), command=self.start_game
-        ).grid(row=3, column=0, columnspan=2, pady=20)
+        ).grid(row=2, column=0, columnspan=2, pady=20)
 
         self.window.mainloop()
 
     def start_game(self):
         name1 = self.name1_entry.get().strip()
-        name2 = self.name2_entry.get().strip()
         symbol1 = self.symbol_var.get()
         symbol2 = "O" if symbol1 == "X" else "X"
 
-        if not name1 or not name2:
-            messagebox.showerror("Error", "Please enter both player names.")
+        if not name1:
+            messagebox.showerror("Error", "Please enter your name.")
             return
 
         self.game.players[0].name = name1
         self.game.players[0].symbol = symbol1
-        self.game.players[1].name = name2
+        self.game.players[1].name = "Computer"
         self.game.players[1].symbol = symbol2
 
-        self.window.destroy()  # Close the setup window
+        self.window.destroy()
         self.launch_game_window()
 
     def launch_game_window(self):
         game_window = tk.Tk()
         game_window.title("X-O Game by Youssef Jamil")
         buttons = []
+
         status_label = tk.Label(game_window, text="", font=("Arial", 16))
         status_label.grid(row=0, column=0, columnspan=3, pady=10)
+
+        score_label = tk.Label(
+            game_window, text=self.get_score_text(), font=("Arial", 12), fg="blue"
+        )
+        score_label.grid(row=1, column=0, columnspan=3)
 
         def update_status():
             player = self.game.players[self.game.current_player]
@@ -83,7 +87,31 @@ class GameGUI:
             for i in range(9):
                 buttons[i].config(text=self.game.board.board[i])
 
+        def get_empty_positions():
+            return [
+                i
+                for i, val in enumerate(self.game.board.board)
+                if val not in ["X", "O"]
+            ]
+
+        def make_computer_move():
+            empty = get_empty_positions()
+            if empty:
+                move = random.choice(empty)
+                self.game.board.board[move] = self.game.players[1].symbol
+                update_board()
+
+                if self.game.check_winner():
+                    self.computer_wins += 1
+                    end_game("Computer wins!")
+                elif self.game.check_draw():
+                    end_game("It's a draw!")
+                else:
+                    self.game.switch_player()
+                    update_status()
+
         def end_game(result_text):
+            score_label.config(text=self.get_score_text())
             choice = messagebox.askquestion("Game Over", f"{result_text}\nPlay Again?")
             if choice == "yes":
                 self.game.board.reset_board()
@@ -100,12 +128,14 @@ class GameGUI:
                 update_board()
 
                 if self.game.check_winner():
+                    self.player_wins += 1
                     end_game(f"{current_player.name} wins!")
                 elif self.game.check_draw():
                     end_game("It's a draw!")
                 else:
                     self.game.switch_player()
                     update_status()
+                    make_computer_move()
 
         for i in range(9):
             btn = tk.Button(
@@ -116,14 +146,16 @@ class GameGUI:
                 height=2,
                 command=lambda i=i: make_move(i),
             )
-            btn.grid(row=(i // 3) + 1, column=i % 3)
+            btn.grid(row=(i // 3) + 2, column=i % 3)
             buttons.append(btn)
 
         update_board()
         update_status()
         game_window.mainloop()
 
+    def get_score_text(self):
+        return f"Wins - {self.game.players[0].name}: {self.player_wins} | Computer: {self.computer_wins}"
 
-# Start the GUI application
+
 if __name__ == "__main__":
     GameGUI()
