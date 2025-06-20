@@ -1,6 +1,6 @@
-# ❌⭕ X-O Game (Tic-Tac-Toe) - Java CLI Version
+# ❌⭕ X-O Game (Tic-Tac-Toe) - Python CLI Version
 
-Welcome to the X-O Game (also known as Tic-Tac-Toe), a fully interactive two-player command-line game written in Java. This game was built as a practice project to reinforce Java fundamentals, logical thinking, and clean code structure.
+Welcome to the X-O Game (also known as Tic-Tac-Toe), a fully interactive two-player command-line game written in Python. This game was built as a practice project to reinforce Python fundamentals, logical thinking, and clean code structure.
 
 ---
 
