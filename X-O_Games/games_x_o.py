@@ -250,7 +250,3 @@ class Game:
     def restart_game(self):
         self.board = Board()
         self.current_player = 0
-
-
-g = Game()
-g.start_game()
